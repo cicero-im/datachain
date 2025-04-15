@@ -57,6 +57,7 @@ from datachain.sql.types import DateTime, SQLType
 from datachain.utils import DataChainDir
 
 from .datasource import DataSource
+from security import safe_requests
 
 if TYPE_CHECKING:
     from datachain.data_storage import (
@@ -234,12 +235,11 @@ class DatasetRowsFetcher(NodesThreadPool):
         return df.drop("sys__id", axis=1)
 
     def get_parquet_content(self, url: str):
-        import requests
 
         while True:
             if self.should_check_for_status():
                 self.check_for_status()
-            r = requests.get(url, timeout=PULL_DATASET_CHUNK_TIMEOUT)
+            r = safe_requests.get(url, timeout=PULL_DATASET_CHUNK_TIMEOUT)
             if r.status_code == 404:
                 time.sleep(PULL_DATASET_SLEEP_INTERVAL)
                 continue
