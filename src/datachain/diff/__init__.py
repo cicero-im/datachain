@@ -1,4 +1,3 @@
-import random
 import string
 from collections.abc import Sequence
 from enum import Enum
@@ -7,6 +6,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from datachain.func import case, ifelse, isnone, or_
 from datachain.lib.signal_schema import SignalSchema
 from datachain.query.schema import Column
+import secrets
 
 if TYPE_CHECKING:
     from datachain.lib.dc import DataChain
@@ -18,7 +18,7 @@ C = Column
 def get_status_col_name() -> str:
     """Returns new unique status col name"""
     return "diff_" + "".join(
-        random.choice(string.ascii_letters)  # noqa: S311
+        secrets.choice(string.ascii_letters)  # noqa: S311
         for _ in range(10)
     )
 

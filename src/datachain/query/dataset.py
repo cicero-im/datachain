@@ -2,7 +2,6 @@ import contextlib
 import inspect
 import logging
 import os
-import random
 import string
 import subprocess
 import sys
@@ -63,6 +62,7 @@ from datachain.utils import (
     get_datachain_executable,
     safe_closing,
 )
+import secrets
 
 if TYPE_CHECKING:
     from sqlalchemy.sql.elements import ClauseElement
@@ -1158,7 +1158,7 @@ class DatasetQuery:
     @staticmethod
     def get_table() -> "TableClause":
         table_name = "".join(
-            random.choice(string.ascii_letters)  # noqa: S311
+            secrets.choice(string.ascii_letters)  # noqa: S311
             for _ in range(16)
         )
         return sqlalchemy.table(table_name)

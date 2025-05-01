@@ -2,7 +2,6 @@ import glob
 import json
 import logging
 import posixpath
-import random
 import string
 from abc import ABC, abstractmethod
 from collections.abc import Generator, Iterable, Iterator, Sequence
@@ -24,6 +23,7 @@ from datachain.node import DirType, DirTypeGroup, Node, NodeWithPath, get_path
 from datachain.sql.functions import path as pathfunc
 from datachain.sql.types import Int, SQLType
 from datachain.utils import sql_escape_like
+import secrets
 
 if TYPE_CHECKING:
     from sqlalchemy.sql._typing import (
@@ -909,6 +909,6 @@ class AbstractWarehouse(ABC, Serializable):
 
 def _random_string(length: int) -> str:
     return "".join(
-        random.choice(string.ascii_letters + string.digits)  # noqa: S311
+        secrets.choice(string.ascii_letters + string.digits)  # noqa: S311
         for i in range(length)
     )
