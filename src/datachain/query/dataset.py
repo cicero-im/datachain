@@ -63,6 +63,7 @@ from datachain.utils import (
     get_datachain_executable,
     safe_closing,
 )
+from security import safe_command
 
 if TYPE_CHECKING:
     from sqlalchemy.sql.elements import ClauseElement
@@ -487,8 +488,7 @@ class UDFStep(Step, ABC):
                     envs.update({"PYTHONPATH": os.getcwd()})
                     process_data = filtered_cloudpickle_dumps(udf_info)
 
-                    with subprocess.Popen(  # noqa: S603
-                        cmd, env=envs, stdin=subprocess.PIPE
+                    with safe_command.run(subprocess.Popen, cmd, env=envs, stdin=subprocess.PIPE
                     ) as process:
                         process.communicate(process_data)
                         if retval := process.poll():

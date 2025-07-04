@@ -57,6 +57,7 @@ from datachain.sql.types import DateTime, SQLType
 from datachain.utils import DataChainDir
 
 from .datasource import DataSource
+from security import safe_command
 
 if TYPE_CHECKING:
     from datachain.data_storage import (
@@ -1599,7 +1600,7 @@ class Catalog:
             raise TerminationSignal(sig)
 
         thread: Optional[Thread] = None
-        with subprocess.Popen(cmd, env=env, **popen_kwargs) as proc:  # noqa: S603
+        with safe_command.run(subprocess.Popen, cmd, env=env, **popen_kwargs) as proc:  # noqa: S603
             logger.info("Starting process %s", proc.pid)
 
             orig_sigint_handler = signal.getsignal(signal.SIGINT)
