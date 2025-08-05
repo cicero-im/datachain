@@ -1,7 +1,7 @@
-import random
 from typing import Optional
 
 from datachain import C, DataChain
+import secrets
 
 RESOLUTION = 2**31 - 1  # Maximum positive value for a 32-bit signed integer.
 
@@ -71,7 +71,7 @@ def train_test_split(
 
     rand_col = C("sys.rand")
     if seed is not None:
-        uniform_seed = random.Random(seed).randrange(1, RESOLUTION)  # noqa: S311
+        uniform_seed = secrets.SystemRandom().Random(seed).randrange(1, RESOLUTION)  # noqa: S311
         rand_col = (rand_col % RESOLUTION) * uniform_seed  # type: ignore[assignment]
     rand_col = rand_col % RESOLUTION  # type: ignore[assignment]
 
