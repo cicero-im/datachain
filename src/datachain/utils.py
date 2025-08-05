@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import os.path as osp
-import random
 import re
 import sys
 import time
@@ -20,6 +19,7 @@ import platformdirs
 from dateutil import tz
 from dateutil.parser import isoparse
 from pydantic import BaseModel
+import secrets
 
 if TYPE_CHECKING:
     import pandas as pd
@@ -270,7 +270,7 @@ def retry_with_backoff(retries=5, backoff_sec=1, errors=(Exception,)):
                     if num_tried == retries:
                         raise
                     sleep = (
-                        backoff_sec * 2** num_tried + random.uniform(0, 1)  # noqa: S311
+                        backoff_sec * 2** num_tried + secrets.SystemRandom().uniform(0, 1)  # noqa: S311
                     )
                     logger.exception(
                         "Error in %s, retrying in %ds, attempt %d",
